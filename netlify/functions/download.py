@@ -7,10 +7,9 @@ import os
 
 def handler(event, context):
     """
-    Función de Netlify para descargar audio de YouTube.
+    Función de Netlify para descargar un video de YouTube.
     """
     try:
-        # Analiza el cuerpo de la solicitud JSON
         body = json.loads(event['body'])
         video_url = body.get('url')
 
@@ -20,30 +19,33 @@ def handler(event, context):
                 'body': 'URL de YouTube no proporcionada.'
             }
 
-        # Descarga el audio en un directorio temporal
         with TemporaryDirectory() as temp_dir:
             yt = YouTube(video_url)
-            stream = yt.streams.filter(only_audio=True).first()
+            
+            # --- CAMBIO CLAVE AQUÍ ---
+            # En lugar de solo audio, obtenemos el stream de mayor resolución con video y audio
+            stream = yt.streams.get_highest_resolution()
+            
             if not stream:
                 return {
                     'statusCode': 404,
-                    'body': 'No se encontró un stream de audio para el video.'
+                    'body': 'No se encontró un stream de alta resolución para el video.'
                 }
 
             file_path = stream.download(output_path=temp_dir)
             
-            # Obtiene el nombre del archivo del stream
-            filename = yt.title + '.m4a'
-            # Lee el archivo en memoria y lo codifica en Base64
+            # El nombre del archivo ahora termina en .mp4
+            filename = yt.title + '.mp4'
+
             with open(file_path, 'rb') as f:
                 file_content = f.read()
                 encoded_file = base64.b64encode(file_content).decode('utf-8')
             
-            # Configura la respuesta para la descarga
+            # El Content-Type ahora es para un video MP4
             return {
                 'statusCode': 200,
                 'headers': {
-                    'Content-Type': 'audio/m4a',
+                    'Content-Type': 'video/mp4',
                     'Content-Disposition': f'attachment; filename="{filename}"',
                 },
                 'body': encoded_file,

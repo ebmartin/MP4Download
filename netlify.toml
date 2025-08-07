@@ -3,5 +3,9 @@
   functions = "netlify/functions"
 
 [functions]
-  python = "3.9"  # Usamos 'python' en lugar de 'python_version'
-  external_packages = ["pytube"]
+  # Aquí se define la configuración global para todas las funciones
+  # de Python en tu proyecto.
+  [functions.python]
+    python_version = "3.9"
+    external_packages = ["pytube"]
+

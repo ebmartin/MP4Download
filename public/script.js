@@ -7,7 +7,6 @@ document.getElementById('download-form').addEventListener('submit', async (e) =>
     message.style.color = '#007bff';
 
     try {
-        // Llama a la función de Netlify a través de su ruta estándar
         const response = await fetch('/.netlify/functions/download', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -15,14 +14,12 @@ document.getElementById('download-form').addEventListener('submit', async (e) =>
         });
 
         if (response.ok) {
-            // Si la respuesta es exitosa, se espera un archivo
             const blob = await response.blob();
             const downloadUrl = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = downloadUrl;
-            // Usa el nombre de archivo del header, si está disponible
             const contentDisposition = response.headers.get('Content-Disposition');
-            let filename = 'audio.m4a';
+            let filename = 'video.mp4'; // --- CAMBIO AQUÍ ---
             if (contentDisposition) {
                 const filenameMatch = contentDisposition.match(/filename="(.+)"/);
                 if (filenameMatch && filenameMatch.length > 1) {

@@ -3,6 +3,5 @@
   functions = "netlify/functions"
 
 [functions]
-  node_bundler = "esbuild"
-  python_version = "3.9"
+  python = "3.9"  # Usamos 'python' en lugar de 'python_version'
   external_packages = ["pytube"]

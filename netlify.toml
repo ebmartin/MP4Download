@@ -6,6 +6,7 @@
   # Aquí se define la configuración global para todas las funciones
   # de Python en tu proyecto.
   [functions.python]
-    python_version = "3.9"
+    #python_version = "3.9"
+
 
 

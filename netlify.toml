@@ -7,5 +7,5 @@
   # de Python en tu proyecto.
   [functions.python]
     python_version = "3.9"
-    external_packages = ["pytube"]
+
 
